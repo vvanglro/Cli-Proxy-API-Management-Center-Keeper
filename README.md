@@ -10,6 +10,28 @@ A single-file Web UI (React + TypeScript) for operating and troubleshooting the 
 
 Since version 6.0.19, the Web UI ships with the main program; access it via `/management.html` on the API port once the service is running.
 
+## Fork notes
+
+This is a fork of the official management panel repository. The main change is a new **Monitoring** menu item under **Quota Management**, used to embed the frontend page of another service, **CPA Usage Keeper**.
+
+When opening Monitoring for the first time, enter the CPA Usage Keeper service URL, for example:
+
+```text
+http://localhost:8080
+```
+
+CPA Usage Keeper handles its own password login and API requests inside the embedded page. The browser will attach its session cookie according to that service's cookie policy. To avoid the cookie being treated as third-party iframe context, use the same hostname for both the management panel and CPA Usage Keeper, for example use `localhost` for both instead of mixing `localhost` and `127.0.0.1`.
+
+### Use this fork from CLI Proxy API
+
+Set the panel repository in the CPA configuration to this fork:
+
+```yaml
+panel-github-repository: https://github.com/vvanglro/Cli-Proxy-API-Management-Center-Keeper
+```
+
+Then start CLI Proxy API as usual and open `/management.html`.
+
 ## What this is (and isn’t)
 
 - This repository is the Web UI only. It talks to the CLI Proxy API **Management API** (`/v0/management`) to read/update config, upload credentials, and view logs.
@@ -83,6 +105,7 @@ See `api.md` for the full authentication rules, server-side limits, and edge cas
 - **Auth Files**: upload/download/delete JSON credentials, filter/search/pagination, runtime-only indicators, view supported models per credential (when the server supports it), manage OAuth excluded models (supports `*` wildcards), configure OAuth model alias mappings.
 - **OAuth**: start OAuth/device flows for supported providers, poll status, optionally submit callback `redirect_url`; includes iFlow cookie import.
 - **Quota Management**: manage quota limits and usage for Claude, Antigravity, Codex, Gemini CLI, and other providers.
+- **Monitoring**: embed the CPA Usage Keeper frontend page; enter the service URL on first use and it will be stored locally in the browser.
 - **Config**: edit `/config.yaml` in-browser with YAML highlighting + search, then save/reload.
 - **Logs**: tail logs with incremental polling, auto-refresh, search, hide management traffic, clear logs; download request error log files.
 - **System**: quick links + fetch `/v1/models` (grouped view). Requires at least one proxy API key to query models.

@@ -10,6 +10,28 @@
 
 从6.0.19版本开始，Web UI 随主程序一起提供；服务运行后，通过 API 端口上的"/management.html"访问它。
 
+## Fork 说明
+
+这是官方管理面板仓库的 fork，主要改动是在左侧「配额管理」下面增加了 **监控统计** 菜单，用于嵌入另一个服务的前端页面 **CPA Usage Keeper**。
+
+进入「监控统计」后，首次使用需要手动填写 CPA Usage Keeper 的服务地址，例如：
+
+```text
+http://localhost:8080
+```
+
+CPA Usage Keeper 的登录、password 校验和后续 API 请求都在它自己的页面里完成；浏览器会按该服务的 cookie 规则携带 session cookie。为避免 cookie 被浏览器当作第三方上下文拦截，建议管理面板和 CPA Usage Keeper 使用相同主机名访问，例如都使用 `localhost`，不要混用 `localhost` 和 `127.0.0.1`。
+
+### 在 CLI Proxy API 中使用这个 fork
+
+只需要在 CPA 的配置里把面板仓库改成这个 fork：
+
+```yaml
+panel-github-repository: https://github.com/vvanglro/Cli-Proxy-API-Management-Center-Keeper
+```
+
+之后按 CLI Proxy API 原有方式启动服务并打开 `/management.html` 即可。
+
 ## 这是什么（以及不是什么）
 
 - 本仓库只包含 Web 管理界面本身，通过 CLI Proxy API 的 **Management API**（`/v0/management`）读取/修改配置、上传凭据与查看日志。
@@ -82,6 +104,7 @@ npm run build
 - **认证文件**：上传/下载/删除 JSON 凭据，筛选/搜索/分页，标记 runtime-only；查看单个凭据可用模型（依赖后端支持）；管理 OAuth 排除模型（支持 `*` 通配符）；配置 OAuth 模型别名映射。
 - **OAuth**：对支持的提供商发起 OAuth/设备码流程，轮询状态；可选提交回调 `redirect_url`；包含 iFlow Cookie 导入。
 - **配额管理**：管理 Claude、Antigravity、Codex、Gemini CLI 等提供商的配额上限与使用情况。
+- **监控统计**：嵌入 CPA Usage Keeper 前端页面；首次进入时填写服务地址，后续会保存在浏览器本地。
 - **配置文件**：浏览器内编辑 `/config.yaml`（YAML 高亮 + 搜索），保存/重载。
 - **日志**：增量拉取日志、自动刷新、搜索、隐藏管理端流量、清空日志；下载请求错误日志文件。
 - **系统信息**：快捷链接 + 拉取 `/v1/models` 并分组展示（需要至少一个代理 API Key 才能查询模型）。
