@@ -215,7 +215,6 @@ export function MainLayout() {
 
   const logout = useAuthStore((state) => state.logout);
 
-  const config = useConfigStore((state) => state.config);
   const fetchConfig = useConfigStore((state) => state.fetchConfig);
   const clearCache = useConfigStore((state) => state.clearCache);
 
@@ -434,6 +433,12 @@ export function MainLayout() {
           icon: sidebarIcons.quota,
         },
         {
+          path: '/logs',
+          labelKey: 'nav.logs',
+          metaKey: 'nav_meta.logs',
+          icon: sidebarIcons.logs,
+        },
+        {
           path: '/usage-keeper',
           labelKey: 'nav.monitoring_statistics',
           labelDefault: '监控统计',
@@ -441,16 +446,6 @@ export function MainLayout() {
           metaDefault: 'CPA Usage Keeper',
           icon: sidebarIcons.monitoring,
         },
-        ...(config?.loggingToFile
-          ? [
-              {
-                path: '/logs',
-                labelKey: 'nav.logs',
-                metaKey: 'nav_meta.logs',
-                icon: sidebarIcons.logs,
-              },
-            ]
-          : []),
       ],
     },
     {
