@@ -17,6 +17,7 @@ import {
   IconSidebarConfig,
   IconSidebarDashboard,
   IconSidebarLogs,
+  IconSidebarMonitoring,
   IconSidebarOauth,
   IconSidebarProviders,
   IconSidebarQuota,
@@ -41,6 +42,7 @@ const sidebarIcons: Record<string, ReactNode> = {
   authFiles: <IconSidebarAuthFiles size={18} />,
   oauth: <IconSidebarOauth size={18} />,
   quota: <IconSidebarQuota size={18} />,
+  monitoring: <IconSidebarMonitoring size={18} />,
   config: <IconSidebarConfig size={18} />,
   logs: <IconSidebarLogs size={18} />,
   system: <IconSidebarSystem size={18} />,
@@ -436,6 +438,14 @@ export function MainLayout() {
           metaKey: 'nav_meta.logs',
           icon: sidebarIcons.logs,
         },
+        {
+          path: '/usage-keeper',
+          labelKey: 'nav.monitoring_statistics',
+          labelDefault: '监控统计',
+          metaKey: 'nav_meta.monitoring_statistics',
+          metaDefault: 'CPA Usage Keeper',
+          icon: sidebarIcons.monitoring,
+        },
       ],
     },
     {
@@ -720,7 +730,7 @@ export function MainLayout() {
                   ? <div className="nav-group-label">{t(group.labelKey)}</div>
                   : idx > 0 && <div className="nav-group-divider" aria-hidden="true" />}
                 {group.items.map((item) => {
-                  const itemLabel = t(item.labelKey);
+                  const itemLabel = t(item.labelKey, { defaultValue: item.labelDefault });
                   return (
                     <NavLink
                       key={item.path}
@@ -733,7 +743,9 @@ export function MainLayout() {
                       {showSidebarLabels && (
                         <span className="nav-text">
                           <span className="nav-label">{itemLabel}</span>
-                          <span className="nav-meta">{t(item.metaKey)}</span>
+                          <span className="nav-meta">
+                            {t(item.metaKey, { defaultValue: item.metaDefault })}
+                          </span>
                         </span>
                       )}
                     </NavLink>
